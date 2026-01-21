@@ -43,12 +43,12 @@ proper files in 2024*
 
 ## Version history
 
-The access file and R code were modified over the years. In 2024, the
+The access file and R code were modified over the years. In 2025, the
 reference versions are:
 
-* access file for data collection: bio\_data\_v2024\_SOLEMON\_template
-* R workflow: workflow\_access\_v2024
-* R supplementary functions: functions\_access\_v2024.R
+* access file for data collection: bio\_data\_v2025\_SOLEMON\_template
+* R workflow: workflow\_access\_v2025
+* R supplementary functions: functions\_access\_v2025.R
 
-A detailed history of past versions is coming
+A detailed history of past versions can be found in the folder "past version"
 
