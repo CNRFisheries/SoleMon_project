@@ -1,0 +1,4 @@
+"gear","species_name","length_mm","weight_g","Sex","Mat","id_specimen","length_field2","length_field3","total_number","subsample_number","kg_field1","kg_field2","kg_field3","haul_weight","type_subsample","Notes","ID","idfk","Species","target","lo.ci","hi.ci","suspicious"
+"D","SQUIMAN",23,11,"F","FROSQ-1",NA,0,0,0,0,0,0,0,0,NA,NA,332,66,"Squilla mantis",1,11.3043986242077,34.3843972498513,1
+"D","SQUIMAN",24,12,"F","FROSQ-1",NA,0,0,0,0,0,0,0,0,NA,NA,333,67,"Squilla mantis",1,13.1642829915172,39.0651915670495,1
+"D","RAJAAST",465,980,"M","MEDSE-3",NA,300,300,0,0,0,0,0,0,NA,NA,381,115,"Raja asterias",1,422.320246592236,936.209606057764,1

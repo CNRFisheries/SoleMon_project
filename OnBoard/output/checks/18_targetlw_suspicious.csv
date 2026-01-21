@@ -1,0 +1,6 @@
+"gear","species_name","length_mm","weight_g","Sex","Mat","id_specimen","length_field2","length_field3","total_number","subsample_number","kg_field1","kg_field2","kg_field3","haul_weight","type_subsample","Notes","ID","idfk","Species","target","lo.ci","hi.ci","suspicious"
+"A","MELIKER",34,13,"M",NA,NA,0,0,0,0,0,0,0,0,NA,NA,288,101,"Melicertus kerathurus",1,16.1364712240423,30.0907716561617,1
+"D","SQUIMAN",26,17,"F","FROSQ-1",NA,0,0,0,0,0,0,0,0,NA,NA,254,67,"Squilla mantis",1,18.6570951371899,45.4888730818961,1
+"D","SQUIMAN",23,11,"F","FROSQ-1",NA,0,0,0,0,0,0,0,0,NA,NA,255,68,"Squilla mantis",1,12.6237844510685,30.401374352468,1
+"D","SQUIMAN",31,31,"F","FROSQ-2",NA,0,0,0,0,0,0,0,0,NA,NA,258,71,"Squilla mantis",1,31.2709445922179,78.5017085879735,1
+"D","SEPIOFF",89,69,"M","SOSEM-1",NA,0,0,0,0,0,0,0,0,NA,NA,327,140,"Sepia officinalis",1,76.9540482635498,129.955761380635,1

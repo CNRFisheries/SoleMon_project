@@ -1,0 +1,6 @@
+"gear","species_name","length_mm","weight_g","Sex","Mat","id_specimen","length_field2","length_field3","total_number","subsample_number","kg_field1","kg_field2","kg_field3","haul_weight","type_subsample","Notes","ID","idfk","Species","target","lo.ci","hi.ci","suspicious"
+"D","PAPELON",19,3,"M",NA,NA,0,0,0,0,0,0,0,0,NA,NA,356,175,"Parapenaeus longirostris",1,3.2893362722757,7.27912638800778,1
+"A","SEPIOFF",114,133,"F","SOSEF-2",NA,0,0,0,0,0,0,0,0,NA,NA,295,114,"Sepia officinalis",1,134.978898727368,264.412960998086,1
+"D","SEPIOFF",116,140,"F","SOSEF-2",NA,0,0,0,0,0,0,0,0,NA,NA,305,124,"Sepia officinalis",1,156.231914996402,273.151894429043,1
+"D","SEPIOFF",97,89,"M","SOSEM-2",NA,0,0,0,0,0,0,0,0,NA,NA,311,130,"Sepia officinalis",1,100.058668475717,186.259784017812,1
+"D","SEPIOFF",117,148,"F","SOSEF-2",NA,0,0,0,0,0,0,0,0,NA,NA,313,132,"Sepia officinalis",1,158.133549246197,275.382392600736,1

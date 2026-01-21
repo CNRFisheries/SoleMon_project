@@ -1,18 +1,18 @@
-setwd("C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2024/OnBoard/data/fogli_cala")
+setwd("C:/Users/a.palermino/OneDrive - CNR/github/SoleMon_project/OnBoard")
 library(dplyr)
 library(purrr)
 library(readxl)
 library(stringr)
 
-station.files=list.files()
+station.files=list.files("data/fogli_cala")
 
-i=5
+
 list.hauls=NULL
 for(i in 1:length(station.files)){
   haul_id=str_remove(str_remove(station.files[i],'StationTablet_'),'.xlsx')
-  xdat=read_excel(station.files[i])
+  xdat=read_excel(paste0("data/fogli_cala/",station.files[i]))
   xdat=xdat[!is.na(xdat$Station),]
-  xdat.more=read_excel(station.files[i], 
+  xdat.more=read_excel(paste0("data/fogli_cala/",station.files[i]), 
                        sheet = "NotesCala")
   xdat.more=xdat.more[1,]
   xdat.more$`Tara A (kg)`=ifelse(xdat.more$`Tara A (kg)`=='no', 0,xdat.more$`Tara A (kg)`)
@@ -40,16 +40,16 @@ for(i in 1:length(station.files)){
   list.hauls=rbind(list.hauls, xdat)
   
   # check data taken onboard
-  sample.dat=read_excel(station.files[i], 
+  sample.dat=read_excel(paste0("data/fogli_cala/",station.files[i]), 
              sheet = "Samples onboard")
   if(nrow(sample.dat)>0){
   
-   write.csv(sample.dat, file=paste0('C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2024/OnBoard/data/onboard_measures/haul_',haul_id ,'_onboard_meas.csv'),row.names = F) 
+   write.csv(sample.dat, file=paste0('data/onboard_measures/haul_',haul_id ,'_onboard_meas.csv'),row.names = F) 
   }
   
 
 }
-writexl::write_xlsx(list.hauls, 'C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2024/OnBoard/data/haul_order.xlsx')
+writexl::write_xlsx(list.hauls, '/data/haul_order.xlsx')
 
 
 

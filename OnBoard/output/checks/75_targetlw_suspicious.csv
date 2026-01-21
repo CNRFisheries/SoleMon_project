@@ -1,0 +1,13 @@
+"gear","species_name","length_mm","weight_g","Sex","Mat","id_specimen","length_field2","length_field3","total_number","subsample_number","kg_field1","kg_field2","kg_field3","haul_weight","type_subsample","Notes","ID","idfk","Species","target","lo.ci","hi.ci","suspicious"
+"A","SQUIMAN",20,8,"F","FROSQ-1",NA,0,0,0,0,0,0,0,0,NA,NA,600,292,"Squilla mantis",1,8.57995551535411,20.0688327794172,1
+"D","PAPELON",16,2,"M",NA,NA,0,0,0,0,0,0,0,0,NA,NA,366,58,"Parapenaeus longirostris",1,2.35556648318182,5.14225087751958,1
+"D","PAPELON",16,2,"M",NA,NA,0,0,0,0,0,0,0,0,NA,NA,369,61,"Parapenaeus longirostris",1,2.08982397906313,5.44116620739781,1
+"D","PAPELON",16,2,"M",NA,NA,0,0,0,0,0,0,0,0,NA,NA,371,63,"Parapenaeus longirostris",1,2.14133709815148,4.61574121390099,1
+"D","PAPELON",21,4,"M",NA,NA,0,0,0,0,0,0,0,0,NA,NA,373,65,"Parapenaeus longirostris",1,4.23084081163387,8.79571140648128,1
+"D","PAPELON",16,2,"M",NA,NA,0,0,0,0,0,0,0,0,NA,NA,378,70,"Parapenaeus longirostris",1,2.12783568697692,4.62362449036075,1
+"D","PAPELON",22,9,"F","MEDPF-2",NA,0,0,0,0,0,0,0,0,NA,NA,388,80,"Parapenaeus longirostris",1,4.39039909712083,8.85242536379767,1
+"D","PAPELON",16,5,"F","MEDPF-2",NA,0,0,0,0,0,0,0,0,NA,NA,450,142,"Parapenaeus longirostris",1,2.32675978967396,4.47550389821663,1
+"A","PAPELON",18,3,"M",NA,NA,0,0,0,0,0,0,0,0,NA,NA,466,158,"Parapenaeus longirostris",1,3.10080564598033,7.84833457627854,1
+"A","PAPELON",21,4,"M",NA,NA,0,0,0,0,0,0,0,0,NA,NA,468,160,"Parapenaeus longirostris",1,4.08947817996893,8.93929390033275,1
+"A","PAPELON",21,3,"F","MEDPF-1",NA,0,0,0,0,0,0,0,0,NA,NA,472,164,"Parapenaeus longirostris",1,4.14918416813817,8.23399430439537,1
+"A","PAPELON",19,3,"F","MEDPF-1",NA,0,0,0,0,0,0,0,0,NA,NA,482,174,"Parapenaeus longirostris",1,3.36098425015667,7.22382581338551,1

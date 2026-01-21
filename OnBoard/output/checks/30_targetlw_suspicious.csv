@@ -1,0 +1,3 @@
+"gear","species_name","length_mm","weight_g","Sex","Mat","id_specimen","length_field2","length_field3","total_number","subsample_number","kg_field1","kg_field2","kg_field3","haul_weight","type_subsample","Notes","ID","idfk","Species","target","lo.ci","hi.ci","suspicious"
+"A","PAPELON",26,7,"F","MEDPF-1",NA,0,0,0,0,0,0,0,0,NA,NA,139,30,"Parapenaeus longirostris",1,7.16443201254076,13.0282623223761,1
+"A","PAPELON",28,8,"F","MEDPF-1",NA,0,0,0,0,0,0,0,0,NA,NA,140,31,"Parapenaeus longirostris",1,8.22365120378681,15.6184336457266,1
