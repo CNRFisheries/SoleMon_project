@@ -1,7 +1,7 @@
 ---
 title: "SoleMon data handling handbook version 2025"
 author: ""
-date: '2025-07-02'
+date: '2025-11-13'
 output: 
   html_document:
     toc: TRUE
@@ -38,9 +38,9 @@ Here the characteristics of the haul should be collcted as follow:\
 - **Depth Start (m)**: Depth at the start of the haul
 - **Speed (kn)**: trawl speed
 - **Route**: Route in degrees
-- **WindDirection**: follow the code on the sheet "Note di compilazione"
-- **SeaCondition**: follow the code on the sheet "Note di compilazione"
-- **WeatherCond**: follow the code on the sheet "Note di compilazione"
+- **WindDirection**: follow the code on the sheet "Notes for compilation"
+- **SeaCondition**: follow the code on the sheet "Notes for compilation"
+- **WeatherCond**: follow the code on the sheet "Notes for compilation"
 - **BottomType**: Main benthonic species composition, according to Medits codes  (e.g. ANADTRA)
 - **Notes**: any further note (e.g. twisted cables)
 - **HourTimeStart**: start time of the haul in HOURS:MINUTES
@@ -105,7 +105,7 @@ This sheet contains the list of species that can be eventually collected onboard
 Data collected onboard are stored in access files, located in the "OnBoard/access" subfolder. Ideally, a maximum of 20 hauls should be stored in a .accdb file.
 **IMPORTANT: in case the data collection is done in parallel over multiple laptops, the "OnBoard" folder must be renamed with unique identifiers (e.g.: OnBoard_2024_PLE). Instructions to set up a folder on a new laptop are reported in the repository main page**
 
-To start a new file, copy the template version, which in 2024 it is called "bio_data_v2024_SOLEMON_template.accdb", paste it in the same "OnBoard/access" (or OnBoard_2024_PLE/access) subfolder and rename it as "bio_data_v2024_SOLEMON_YEAR_N.accdb", where YEAR is the reporting year and N is a progressive number. Example: "**bio_data_v2024_SOLEMON_2024_1.accdb**" . *It does not matter if parts of the same haul are in different files, this is handled in post-processing. It does not matters if access with the same name are located in different laptops, this is handled in post processing*.
+To start a new file, copy the template version called "Maschera inserimento SOLEMON_template.accdb", paste it in the same "OnBoard/access" (or OnBoard_2024_PLE/access) subfolder and rename it as "Maschera inserimento SOLEMON_YEAR_N.accdb", where YEAR is the reporting year and N is the name of the computer you are usinf (FRA or ENRI). Example: "**Masschera inserimento SOLEMON_2024_FRA.accdb**" . *It does not matter if parts of the same haul are in different files, this is handled in post-processing. It does not matters if access with the same name are located in different laptops, this is handled in post processing*.
 
 ## Starting a new haul
 
@@ -128,7 +128,7 @@ The structure of the sheets, in 2024, is according to Figure1. In detail:\
 -   **subsample_number**: placeholder for subsamples. The compilation depends on the case. read handbook
 -   **kg_field1**: weight in kilograms, placeholder for cumulative number and subsamples. The compilation depends on the case
 -   **kg_field2**: weight in kilograms, placeholder for cumulative number and subsamples. The compilation depends on the case
--   **kg_field2**: weight in kilograms, placeholder for cumulative number and subsamples. The compilation depends on the case
+-   **kg_field3**: weight in kilograms, placeholder for cumulative number and subsamples. The compilation depends on the case
 -   **haul_weight**: weight of the haul in kilograms. The need for compilation depends on the case
 -   **type_subsample**: accepts values "C1_haul", "C2_species","C3_benthos", "C4_multiple", "other". The compilation depends on the case.
 -   **Notes**: accept notes of any kind.
@@ -274,7 +274,7 @@ All individuals of the species (e.s:ANADTRA) are collected from the benthos subs
 
 #### **Benthos 2 - TURRITELLA**
 
-All individuals of the species are collected from the benthos subsample (the benthos bag) and weighed.  Then a sub-sample of 50/100 individuals is taken and weighed. The shells of these individuals are broken and divided into three categories: empty shells or shells containing sand (shells) and shells containing a marine organism. This case to be with the species: *Turritella communis*(B) and *Aporrhais pespelecani*(B), in their shells can be *Sipuncula*(A). The sample weight of all collected samples is entered in *kg_field1*, the subsample weight (weight of 50/100 individuals) is entered in *kg_field2*. Once all shells have been broken up and each subsample (e.g. shell, turritella and sipuncula) has been counted and weighed, the subsample weight divided by groups is entered in *kg_field1* and the number in *subsample_numbers*. Different records must be created for the different species we find by entering each information in each record (Subsample_numbers, Kg_field1, Kg_field2, Kg_field3);
+All individuals of the species are collected from the benthos subsample (the benthos bag) and weighed.  Then a sub-sample of 50/100 individuals is taken and weighed. The shells of these individuals are broken and divided into three categories: empty shells or shells containing sand (shells) and shells containing a marine organism. This case to be with the species: *Turritella communis*(B) and *Aporrhais pespelecani*(B), in their shells can be *Sipuncula*(A). The sample weight of all collected samples is entered in *kg_field1*, the subsample weight (weight of 50/100 individuals) is entered in *kg_field2*. Once all shells have been broken up and each subsample (e.g. shell, turritella and sipuncula) has been counted and weighed, the subsample weight divided by groups is entered in *kg_field1* and the number in *subsample_numbers*. Different records must be created for the different species we find by entering each information in each record (Subsample_numbers, Kg_field1, Kg_field2, Kg_field3). The number of individuals is not indicated for shells, as we do not need the number of shells for data processing purposes. 
 
 ![Figure 16: Discard subsample, case Turritella](C:/Users/f.luzi/OneDrive - CNR/CNR/SoleMon/Github/SoleMon_project/OnBoard/data/other/turritella.jpg) 
 
