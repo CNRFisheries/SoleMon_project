@@ -37,12 +37,12 @@ The procedure reported here is also explained in more detail in the [handbook](h
 
 ## Version history
 
-The access file and R code were modified over the years. In 2024, the reference versions are:
+The access file and R code were modified over the years. In 2025, the reference versions are:
 
--   access file for data collection: bio_data_v2024_SOLEMON_template
+-   access file for data collection: bio_data_v2025_SOLEMON_template
 
--   R workflow: workflow_access_v2024
+-   R workflow: workflow_access_v2025
 
--   R supplementary functions: functions_access_v2024.R
+-   R supplementary functions: functions_access_v2025.R
 
-A detailed history of past versions is coming
+A detailed history of past versions can be found in the folder "past version"
