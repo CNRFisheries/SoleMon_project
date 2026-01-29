@@ -765,7 +765,7 @@ function3_benthos=function(xdat, xdat_benthos,
                            haul, year, 
                            weight_not_target, weight_benthos,info.haul,
                            subsamples_target,
-                           sampling_type='haul'){
+                           sampling_type){
   
   survey=paste0('SOLEMON', year)
   # Bio data ####
@@ -833,25 +833,25 @@ function3_benthos=function(xdat, xdat_benthos,
       dplyr::summarise(w=sum(w), n=sum(n))
   }
   
-  ## handle raising factor
-  if(paste0('cala_',haul)%in%extra.data$haul){
-    extra.items=extra.data[extra.data$haul==paste0('cala_',haul),]
-    extra.items=extra.items[!is.na(extra.items$weight_g),]
-    extra.items$weight_g=ifelse(extra.items$weight_g==0 & extra.items$kg_field2>0,extra.items$kg_field2*1000,extra.items$weight_g)
-    extra_w=sum(extra.items$weight_g)/1000 #### this ain't no good now. Does not count for MUREBRA
-  }else{
-    extra_w=0
-  }
+  # ## handle raising factor
+  # if(paste0('cala_',haul)%in%extra.data$haul){
+  #   extra.items=extra.data[extra.data$haul==paste0('cala_',haul),]
+  #   extra.items=extra.items[!is.na(extra.items$weight_g),]
+  #   extra.items$weight_g=ifelse(extra.items$weight_g==0 & extra.items$kg_field2>0,extra.items$kg_field2*1000,extra.items$weight_g)
+  #   extra_w=sum(extra.items$weight_g)/1000 #### this ain't no good now. Does not count for MUREBRA
+  # }else{
+  #   extra_w=0
+  # }
   benthos_kg=sum(weight_benthos$w)
-  if(sampling_type=='haul'){
+  if(sampling_type=='benthos'){
     # case benthos: the sample is not representative of the haul (fish and litter were already cleaned). This was the method used since 2005
-  RF=((info.haul$rapiA_kg - info.haul$rapiA_tara) + (info.haul$rapiD_kg - info.haul$rapiD_tara) - (sum(catch_file_trust$w)-extra_w) -(info.haul$litter_kg))/info.haul$benthos_kg # standard
-  RF.d=(info.haul$rapiD_kg - info.haul$rapiD_tara - (sum(catch_file_trust[catch_file_trust$gear=='D',]$w)-extra_w) -info.haul$litter_kg)/info.haul$benthos_kg   
+  RF=((info.haul$rapiA_kg - info.haul$rapiA_tara) + (info.haul$rapiD_kg - info.haul$rapiD_tara) - (sum(catch_file_trust$w)) -(info.haul$litter_kg))/info.haul$benthos_kg # standard
+  RF.d=(info.haul$rapiD_kg - info.haul$rapiD_tara - (sum(catch_file_trust[catch_file_trust$gear=='D',]$w)) -info.haul$litter_kg)/info.haul$benthos_kg   
   
   }else{
     # case haul: the sample is representative of the haul
-  RF=((info.haul$rapiA_kg - info.haul$rapiA_tara) + (info.haul$rapiD_kg - info.haul$rapiD_tara))/info.haul$benthos_kg # standard
-  RF.d=(info.haul$rapiD_kg - info.haul$rapiD_tara)/info.haul$benthos_kg 
+  RF=((info.haul$rapiA_kg - info.haul$rapiA_tara) + (info.haul$rapiD_kg - info.haul$rapiD_tara)-(info.haul$litter_kg))/info.haul$benthos_kg # standard
+  RF.d=((info.haul$rapiD_kg - info.haul$rapiD_tara)-(info.haul$litter_kg))/info.haul$benthos_kg 
   }
   
   if(any(weight_benthos$species_name %in% c(target_species$species_name, shells))){

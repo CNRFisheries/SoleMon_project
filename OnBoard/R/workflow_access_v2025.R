@@ -14,7 +14,7 @@ rm(list = ls())
 #               ifelse(Sys.info()[['user']]=="e.armelloni", "C:/Users/e.armelloni/OneDrive/Lezioni/Lavoro#/Solemon/github/SoleMon_project/OnBoard", 
 #                      ifelse(Sys.info()[['user']]=="Franc", "C:/Users/Franc/OneDrive/Desktop/solemon/2022#/raccolta_dati", NA))) 
 #
-main_wd="C:/Users/a.palermino/OneDrive - CNR/github/SoleMon_project/OnBoard"
+main_wd="C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard"
 setwd(main_wd)
 source('R/functions_access_v2025.R')
 
@@ -33,17 +33,15 @@ changes=read_excel("data/logbook_changes.xlsx",
            sheet = "Sheet1")
 
 ## data for RF ####
-dat.haul=read_excel("data/NotesCala_checked.xlsx")
+dat.haul<-read_excel("data/StationTablet_all.xlsx",sheet="NotesCala")%>%
+  mutate(`Litter(kg)`=as.numeric(ifelse(is.na(`Litter(kg)`),0,`Litter(kg)`)),`WRapD(kg)`=as.numeric(`WRapD(kg)`)-`Litter(kg)`)
+
 dat.lit=read_excel("data/Foglio Inserimento Litter_2025.xlsx", 
            sheet = "inserimento")
 names(dat.lit)[7]='w_g'
 dat.lit=dat.lit%>%
   dplyr::group_by(Station=as.character(Station))%>%
   dplyr::summarise(kg_litter=sum(as.numeric(w_g))/1000)
-
-# extra data is used to compute the raising factor
-extra.data=readr::read_delim("data/additions_benthos.csv", 
-           delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
 haul.info=full_join(dat.haul[,c("Station" ,"WRapA (kg)","Tara A (kg)","WRapD(kg)" ,"Tara D (kg)" ,"WBenthos(kg)" )],
           dat.lit,
@@ -66,9 +64,9 @@ for(xhaul in 1:length(hauls.need)){
                      complete = T)
   # hauldata[[1]]
   # 
-  function2(xdat=hauldata,
-            haul=str_remove( hauls.need[xhaul] ,'cala_'),
-            year=year)
+  # function2(xdat=hauldata,
+  #           haul=str_remove( hauls.need[xhaul] ,'cala_'),
+  #           year=year)
   
   if(str_remove( hauls.need[xhaul] ,'cala_')=='45bis'){
     # hauldata[[3]]$w=c(0.361,1.082)
@@ -91,8 +89,9 @@ for(xhaul in 1:length(hauls.need)){
                                weight_not_target = hauldata[[2]],
                                weight_benthos=benthosdata[[2]],
                                info.haul=haul.info[haul.info$Station==str_remove( 
-                                 hauls.need[xhaul] ,'cala_'),],
-                               subsamples_target=hauldata[[3]])
+                               hauls.need[xhaul] ,'cala_'),],
+                               subsamples_target=hauldata[[3]],
+                               sampling_type="haul")
 
   }
 }
@@ -126,8 +125,8 @@ trustdat=function3_benthos(xdat=hauldata[[1]],
                            weight_not_target = hauldata[[2]], 
                            weight_benthos=benthosdata[[2]],
                            info.haul=haul.info[haul.info$Station==haul,],
-                          subsamples_target=hauldata[[3]],
-                           catch_sample_disattivati = catch_sample_disattivati)
+                           subsamples_target=hauldata[[3]],
+                           sampling_type="haul")
 
 info.haul=info.haul[info.haul$Station==haul,]
 
@@ -143,8 +142,7 @@ trustdat=function3(xdat=hauldata[[1]],
                   haul=haul, 
                   year = year, 
                   weight_not_target = hauldata[[2]],  
-                  subsamples_target=hauldata[[3]],
-                  catch_sample_disattivati = catch_sample_disattivati) # function 2
+                  subsamples_target=hauldata[[3]]) # function 2
 
 # function4: save PDF
 function4(trustdat = trustdat, 
@@ -225,8 +223,7 @@ for(xhaul in 1:nrow(haul_summary)){
                        haul=haul, 
                        year = year, 
                        weight_not_target = hauldata[[2]],  
-                       subsamples_target=hauldata[[3]],
-                       catch_sample_disattivati = catch_sample_disattivati)
+                       subsamples_target=hauldata[[3]])
     
   }
   
