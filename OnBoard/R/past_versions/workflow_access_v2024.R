@@ -1,6 +1,3 @@
-
-#
-#
 # This script controls the functions needed to preocess solemon data collected onboard.
 # It is hosted at https://github.com/CNRFisheries/SoleMon_project
 # If you consider to do any change, please contact the github page administrator.
@@ -17,7 +14,7 @@ rm(list = ls())
 #               ifelse(Sys.info()[['user']]=="e.armelloni", "C:/Users/e.armelloni/OneDrive/Lezioni/Lavoro#/Solemon/github/SoleMon_project/OnBoard", 
 #                      ifelse(Sys.info()[['user']]=="Franc", "C:/Users/Franc/OneDrive/Desktop/solemon/2022#/raccolta_dati", NA))) 
 #
-main_wd="C:/Users/a.palermino/OneDrive - CNR/github/SoleMon_project/OnBoard"
+main_wd="C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard"
 setwd(main_wd)
 source('R/functions_access_v2024.R')
 
@@ -26,11 +23,11 @@ unique(target_species$species_name) # these are the species for which you collec
 shells  # these are the species for which you collect total weight and total number 
 unique(haul_order$haul)
 # set parameters
-haul='all' # single haul OR 'all'
-db='2024_ENA' # to be specified only for single hauls
+haul='24' # single haul OR 'all'
+db='FRA' # to be specified only for single hauls
 updateID='N' # if Y it updates the amount of fish which has an ID assigned per category
 area_sepia='D'
-year=2024
+year=2025
 area='ITA17' 
 changes=read_excel("data/logbook_changes.xlsx", 
            sheet = "Sheet1")
@@ -58,7 +55,7 @@ haul.info=haul.info%>%replace(is.na(.),0)
 lw.mcmc=read.csv("data/post_dist_good_species.csv")
 
 # multi-haul applications ####
-hauls.need=get_tables(complete = T)
+hauls.need=get_tables(db=db,complete=F)
 #xhaul=49
 
 for(xhaul in 1:length(hauls.need)){
@@ -102,17 +99,17 @@ for(xhaul in 1:length(hauls.need)){
   }
 }
 
-
 # single haul application ####
-
-haul='all' # single haul OR 'all'
+db='ENA'
+haul='20' # single haul OR 'all'
 # function1 extract data from access db and format them
 hauldata=function1(haul=haul, 
                    year=year,
-                   complete = T)# extract and format data
+                   complete = F,
+                   db=db)# extract and format data
 
-hauldata[[3]]$w=c(0.361,1.082)
-hauldata[[3]]$n=c(72,155)
+# hauldata[[3]]$w=c(0.361,1.082)
+# hauldata[[3]]$n=c(72,155)
 
 
 benthosdata=function_benthos(haul=haul,

@@ -1,4 +1,4 @@
-setwd("C:/Users/a.palermino/OneDrive - CNR/github/SoleMon_project/OnBoard")
+setwd("C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard")
 library(dplyr)
 library(purrr)
 library(readxl)

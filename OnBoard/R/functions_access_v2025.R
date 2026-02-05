@@ -121,36 +121,6 @@ function1=function(haul, db=NA, year, complete=F){
   xdat=left_join(xdat, species_list, by='species_name') # attach info on target species
   if(nrow(xdat[is.na(xdat$target),])>0){xdat[is.na(xdat$target),]$target=0}# (name and target [Y/N], then check that no target species is NA)
   
-  # # Genetic and otolits IDs ####
-  # FishIDs=read_excel("data/fishID.xlsx") # load files where otolit and gen ids are stored
-  # FishIDs_support=strsplit(as.character(str_replace_all(FishIDs$species, ':', ',')), ',')
-  # #xdat$Oth=xdat$id_specimen
-  # #xdat$fish_ID=as.character(NA)
-  # 
-  # if(updateID=='Y'){
-  # # assign FishID (deprecated in 2024)
-  # for(i in 1:nrow(xdat)){
-  #      if(is.na(xdat[i,]$id_specimen)==FALSE){
-  #        # look into the FishID file for the correct species
-  #         for(j in 1:length(FishIDs_support)){
-  #           if(xdat[i,]$species_name%in%FishIDs_support[[j]]){
-  #           FishIDs_row=j
-  #           break
-  #           }
-  #          }
-  #       # assign FISHID
-  #       xdat[i,]$fish_ID=paste0(FishIDs[FishIDs_row,]$code, FishIDs[FishIDs_row,]$fishID+1)
-  #       # update FishID file
-  #       FishIDs[FishIDs_row,]$fishID=FishIDs[FishIDs_row,]$fishID+1
-  #       }
-  #     }
-  #   
-  # # save updated id sheet
-  # writexl::write_xlsx(FishIDs, "data/fishID.xlsx")}else{
-  #   
-  #  # xdat$fish_ID=xdat$id_specimen
-  # }
-  
   # sex and maturity ####
   # format data
   xdat$Sex=as.character(xdat$Sex)
@@ -176,6 +146,56 @@ function1=function(haul, db=NA, year, complete=F){
       }
     }
   }
+  
+  ## Fill gaps for non target: lw ####
+  # start of bayesian lw
+  if(nrow(xdat)>0){
+    for(i in 1:nrow(xdat)){
+      # format length weight data 
+      if (xdat[i,]$species_name %in% non_target_list & !is.na(xdat[i,]$Notes)){
+      if(xdat[i,]$species_name %in% unique(lw.mcmc$specie)){
+        i.lwpars=lw.mcmc[lw.mcmc$specie==xdat[i,]$species_name,]
+        # adjust weight
+        if(xdat[i,]$weight_g==0|is.na(xdat[i,]$weight_g)){
+          xdat[i,]$weight_g=round(as.numeric(quantile(exp(i.lwpars$alpha + i.lwpars$beta * log(xdat[i,]$length_mm/10)), 0.5)))
+          xdat[i,]$Notes=paste('w inferred')
+        }
+        # adjust length
+        if(xdat[i,]$length_mm==0|is.na(xdat[i,]$length_mm)){
+          xdat[i,]$length_mm=round(as.numeric(quantile(exp((log(xdat[i,]$weight_g)-i.lwpars$alpha)/i.lwpars$beta)*10,0.5)))
+          xdat[i,]$Notes=paste('l inferred')
+        }  # end of bayesian lw
+      }else{
+        
+        # Start of standard a an b method for species without good lw model results
+        # adjust weight
+        if(xdat[i,]$weight_g==0|is.na(xdat[i,]$weight_g)){
+          a=lw_solemon[lw_solemon$species_name==xdat[i,]$species_name,]$a
+          b=lw_solemon[lw_solemon$species_name==xdat[i,]$species_name,]$b
+          
+          if(xdat[i,]$species_name  %in% crustaceans){
+            xdat[i,]$weight_g=round((a*xdat[i,]$length_mm^b))
+          }else{
+            xdat[i,]$weight_g=round((a*xdat[i,]$length_mm^b)/1000)
+          }
+        } 
+        # adjust length
+        if(xdat[i,]$length_mm==0|is.na(xdat[i,]$length_mm)){
+          a=lw_solemon[lw_solemon$species_name==xdat[i,]$species_name,]$a
+          b=lw_solemon[lw_solemon$species_name==xdat[i,]$species_name,]$b
+          
+          if(xdat[i,]$species_name  %in% crustaceans){
+            xdat[i,]$length_mm=round((xdat[i,]$weight_g/(a))^(1/b))
+          }
+          if(!xdat[i,]$species_name  %in% crustaceans){
+            xdat[i,]$length_mm=round((xdat[i,]$weight_g/(a/1000))^(1/b))
+          } 
+        }
+      }
+    }
+  }
+}
+  
   
   ## summarise weight data for other commercial species ####
   weight_not_target=xdat[xdat$target!=1 & xdat$species_name%ni% shells,]%>%
@@ -321,12 +341,12 @@ function1=function(haul, db=NA, year, complete=F){
           #                      (i.lwpars$alpha + i.lwpars$beta * log(xdat[i,]$length_mm/10)), # mu
           #                      i.lwpars$sigma))) # sigma
           xdat[i,]$weight_g=round(as.numeric(quantile(exp(i.lwpars$alpha + i.lwpars$beta * log(xdat[i,]$length_mm/10)), 0.5)))
-          xdat[i,]$Notes=paste(xdat[i,]$Notes, 'w inferred')
+          xdat[i,]$Notes=paste('w inferred')
         }
         # adjust length
         if(xdat[i,]$length_mm==0|is.na(xdat[i,]$length_mm)){
           xdat[i,]$length_mm=round(as.numeric(quantile(exp((log(xdat[i,]$weight_g)-i.lwpars$alpha)/i.lwpars$beta)*10,0.5)))
-          xdat[i,]$Notes=paste(xdat[i,]$Notes, 'l inferred')
+          xdat[i,]$Notes=paste('l inferred')
         }  # end of bayesian lw
       }else{ 
         

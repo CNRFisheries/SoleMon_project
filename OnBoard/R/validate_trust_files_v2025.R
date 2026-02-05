@@ -5,14 +5,14 @@ library(dplyr)
 library(magrittr)
 library(ggplot2)
 
-target.dir="C:/Users/a.palermino/OneDrive - CNR/github/SoleMon_project/OnBoard"
+target.dir="C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard"
 ### catch sample data ####
 '%ni%'=Negate('%in%')
 setwd(target.dir)
 if (!dir.exists(paste0(target.dir,"/output/edits"))) {dir.create(paste0(target.dir,"/output/edits"))}
 setwd(file.path(target.dir, "output/trust/catch_sample"))
-target.list=read_excel("C:/Users/a.palermino/OneDrive - CNR/github/SoleMon_project/OnBoard/data/target_species.xlsx")
-xfiles=list.files()
+target.list=read_excel("C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard/data/target_species.xlsx")
+xfiles=list.files()[-length(xfiles)]
 dat_store=NA
 for(k in 1:length(xfiles)){
   dat_store=rbind(dat_store,read_excel(xfiles[k]) )
@@ -24,7 +24,7 @@ writexl::write_xlsx(dat_store, "CatchSample_data.xlsx")
 # Catch file ####
 setwd(file.path(target.dir, "output/trust/catch"))
 
-xfiles=list.files()
+xfiles=list.files()[-1]
 dat_store=NA
 for(k in 1:length(xfiles)){
   k.dat=read_excel(xfiles[k])
@@ -117,15 +117,16 @@ ggsave("../../edits/suspicious_n.png", width = 42, height = 20, units='cm')
 ### Bio data ####
 rm(list = ls())
 '%ni%'=Negate('%in%')
-target.dir="C:/Users/a.palermino/OneDrive - CNR/github/SoleMon_project/OnBoard"
-setwd(paste0(target.dir,"/output/trust/bio"))
+target.dir="C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard"
+setwd("C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard/output/trust/bio")
 
-xfiles=list.files()
+xfiles=list.files()[-1]
 dat_store=NA
 for(k in 1:length(xfiles)){
   dat_store=rbind(dat_store,read_excel(xfiles[k]))
 }
-dat_store=dat_store[!is.na(dat_store$Survey),]%>%filter(Station!="test")
+dat_store=dat_store[!is.na(dat_store$Survey),]%>%filter(Station!="test")%>%
+  filter(`W(g)`!=-1 &`L(mm)`!=-1)
 writexl::write_xlsx(dat_store, "Bio_data.xlsx")
 
 names(dat_store)[9]='w_g'
@@ -172,7 +173,7 @@ ggplot(data=dat_store%>%
   facet_wrap(~SpecCode, scales='free')
 
 # bayesian LW
-lw.mcmc=read_csv("C:/Users/a.palermino/OneDrive - CNR/github/SoleMon_project/OnBoard/data/post_dist_good_species.csv")
+lw.mcmc=read_csv("C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard/data/post_dist_good_species.csv")
 
 
 target.species='SCOHRHO' # select species
