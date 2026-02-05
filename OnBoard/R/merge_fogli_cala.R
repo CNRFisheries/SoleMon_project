@@ -184,7 +184,7 @@ StationData <- st %>%
     Status = "Approved"
   )
 
-StationDate2024_path <- "C:/Users/a.palermino/OneDrive - CNR/github/fogli_cala/StationDate2024.xlsx"
+StationDate2024_path <- "C:/Users/a.palermino/OneDrive - CNR/github/SoleMon_project/OnBoard/data/fogli_cala/fogli_cala_Trust_2024"
 StationDate2024 <- read_excel(StationDate2024_path, col_types = "text") %>%
   mutate(StationName = as.character(StationName))
 
