@@ -14,7 +14,7 @@ library(stringr)
 library(grid)
 rm(list = ls())
 '%ni%'=Negate('%in%')
-wd_acces="C:/Users/a.palermino/OneDrive - CNR/github/SoleMon_project/OnBoard"
+wd_acces="C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard"
 DRIVERINFO <- "Driver={Microsoft Access Driver (*.mdb, *.accdb)};"
 
 source_file <- paste0(wd_acces,"/access/bio_data_v2025_SOLEMON_template.accdb")
@@ -66,7 +66,7 @@ hauls_db_FRA=tables_check2[tables_check2$original_name %ni% common_hauls,]
 hauls_db_FRA$id=seq(1:nrow(hauls_db_FRA))
 
 # find hauls with data taken onboard and to be added
-dir.target.ob="C:/Users/a.palermino/OneDrive - CNR/github/SoleMon_project/OnBoard/data/onboard_measures"
+dir.target.ob="C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard/data/onboard_measures"
 x.files.ob=data.frame(target.file=list.files(path=dir.target.ob))
 x.files.ob$hauls.ob=str_remove(str_remove(x.files.ob$target.file,'_onboard_meas.csv'),'haul_')
 
@@ -251,7 +251,7 @@ for(icheck in 1:length(common_hauls)){
 
 
 #### check if there is something to add from the otolith db and then save
-get_tables=function(db,wd_acces="C:/Users/a.palermino/OneDrive - CNR/github/SoleMon_project/OnBoard/access"){
+get_tables=function(db,wd_acces="C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard/access"){
   MDBPATH <- paste0(wd_acces,"/Maschera inserimento SOLEMON_",db,".accdb") 
   PATH <- paste0(DRIVERINFO, "DBQ=", MDBPATH)
   channel <- odbcDriverConnect(PATH)
@@ -376,12 +376,11 @@ for(haul in 1:length(list_hauls)){
   channel <- odbcDriverConnect(PATH)
   
   xdat_benthos <- sqlQuery(channel,
-                           paste0("SELECT * FROM [", list_hauls[haul], "] ORDER BY [ID]"),
-                           stringsAsFactors = FALSE)%>% 
+                           paste0("SELECT * FROM [", list_hauls[haul], "] ORDER BY [ID]"),stringsAsFactors = FALSE)%>% 
     tidyr::fill(species_name, .direction = "down") %>%
     tidyr::fill(gear, .direction = "down")
   xdat_benthos_c<-xdat_benthos%>%
-    filter(length_mm>0,!species_name %in% c("AEQUOPE","CHLAGLA","LIOCDEP"))
+    filter(length_mm>0|!is.na(Sex),!species_name %in% c("AEQUOPE","CHLAGLA","LIOCDEP"))
   
   xdat_final<-rbind(xdat_commercial,xdat_benthos_c)%>%select(-rownames)
   xdat_final$ID=seq(max(xdat_final$ID)+1,(max(xdat_final$ID)+nrow(xdat_final)),1)

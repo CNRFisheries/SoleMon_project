@@ -35,7 +35,7 @@ species_list=read_excel("data/species_list.xlsx")
 mat_list=read_excel("data/maturity_stages.xlsx")
 lw_solemon=read_excel("data/lw_SoleMon.xlsx")
 haul_order <- read_excel("data/haul_order.xlsx")
-solemonTB=read_excel('data/solemon_TB.xlsx')
+solemonTB=read_excel('data/solemon_TB_2023.xlsx')
 solemonTB$species_name=paste0(solemonTB$GENUS, solemonTB$SPECIES)
 target_species=read_excel('data/target_species.xlsx')
 
@@ -353,7 +353,6 @@ function1=function(haul, db=NA, year, complete=F){
       }
     }
   }
-  
   return(list(xdat, weight_not_target, subsamples_target))
   
 } 
@@ -539,7 +538,7 @@ get_tables=function(db=NA, complete=F){
 #**********************************
 # performs checks ####
 #**********************************
-function2=function(xdat, haul, year=2024){
+function2=function(xdat, haul, year=2025){
   
   xxdat=xdat[[1]]
   
@@ -638,6 +637,7 @@ function2=function(xdat, haul, year=2024){
     rbind(allspeciesstats)%>%
     ggplot(aes(x=YEAR, y=n, color=gear))+
     geom_point()+
+    geom_smooth(col=3)+
     facet_wrap(~species_name, scales='free')+
     scale_x_continuous(breaks = seq(2005,year,1))+
     theme(axis.text.x=element_text(angle=90))

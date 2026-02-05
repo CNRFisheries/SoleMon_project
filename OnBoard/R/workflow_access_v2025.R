@@ -54,6 +54,7 @@ lw.mcmc=read.csv("data/post_dist_good_species.csv")
 
 # multi-haul applications ####
 hauls.need=get_tables(db,complete=T)
+xhaul=41
 
 for(xhaul in 1:length(hauls.need)){
   cat(paste0(hauls.need[xhaul],"    ", xhaul))
