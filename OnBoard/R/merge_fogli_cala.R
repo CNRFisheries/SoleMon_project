@@ -57,13 +57,17 @@ library(tidyr)
 library(writexl)
 library(lubridate)
 
-setwd("C:/Users/a.palermino/OneDrive - CNR/github/SoleMon_project/OnBoard/data/fogli_cala")
+setwd("C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard/data/fogli_cala")
 
-# --- OUTPUT DIR ---
-out_dir <- file.path(getwd(), "fogli_cala_trust")
+# --- BASE OUTPUT DIR ---
+base_out_dir <- "C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard/output/trust"
+
+# crea (se non esiste) la cartella fogli_cala_trust
+out_dir <- file.path(base_out_dir, "fogli_cala_trust")
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
-cat("All excell will be saved in:\n", out_dir, "\n")
+cat("All excel files will be saved in:\n", out_dir, "\n")
+
 
 # Same parameters for each row#
 survey_val <- "SOLEMON2025"
@@ -161,7 +165,7 @@ write_xlsx(
        ), 
   file.path(out_dir, "StationTablet_all.xlsx"))
 
-# 2) StationData 2025 + StratumCode/Length(m) filling from 2024. Trust does not allow NA in these columns. They will be modified later on trust.
+# 2) StationData + StratumCode/Length(m) filling from 2024. Trust does not allow NA in these columns. They will be modified later on trust.
 
 st <- read_excel(stationtablet_all_path, sheet = "Station", col_types = "text")
 
@@ -184,7 +188,7 @@ StationData <- st %>%
     Status = "Approved"
   )
 
-StationDate2024_path <- "C:/Users/a.palermino/OneDrive - CNR/github/SoleMon_project/OnBoard/data/fogli_cala/fogli_cala_Trust_2024"
+StationDate2024_path <-"C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard/data/fogli_cala/fogli_cala_Trust_2024/StationDate2024.xlsx"
 StationDate2024 <- read_excel(StationDate2024_path, col_types = "text") %>%
   mutate(StationName = as.character(StationName))
 
@@ -201,10 +205,15 @@ StationData_filled <- StationData %>%
   ) %>%
   select(-StratumCode.2024, -`Length(m).2024`)
 
-stationdata_path <- file.path(out_dir, "StationData2025.xlsx")
-write_xlsx(list(StationData = StationData_filled), file.path(out_dir, "StationDate2025.xlsx"))
+stationdata_path <- file.path(out_dir, "StationData.xlsx")
 
-# 3) StationGear 2025
+write_xlsx(
+  list(StationData = StationData_filled
+  ), 
+  file.path(out_dir, "StationDate.xlsx"))
+
+
+# 3) StationGear 
 
 
 #  Wal(m)
@@ -236,9 +245,13 @@ base_gear <- StationData_filled %>%
   mutate(`Wal(m)` = Wal) %>%
   select(-Wal)
 
-StationGear2025 <- bind_rows(base_gear, base_gear %>% mutate(GearNum = "2"))
-stationgear_path <- file.path(out_dir, "StationGear2025.xlsx")
-write_xlsx(list(StationGear2025 = StationGear2025),file.path(out_dir, "StationGear2025.xlsx"))
+StationGear <- bind_rows(base_gear, base_gear %>% mutate(GearNum = "2"))
+stationgear_path <- file.path(out_dir, "StationGear.xlsx")
+
+write_xlsx(
+  list(StationGear = StationGear
+       ), 
+  file.path(out_dir, "StationGear.xlsx"))
 
 
 # 4) StationPoint 2025 (Start + End) 
@@ -292,13 +305,128 @@ StationPoint_end <- st %>%
 StationPoint <- bind_rows(StationPoint_start, StationPoint_end)
 
 # Save
-stationpoint_path <- file.path(out_dir, "StationPoint2025.xlsx")
-write_xlsx(list(StationPoint2025 = StationPoint), file.path(out_dir,"StationPoint2025.xlsx"))
+stationpoint_path <- file.path(out_dir, "StationPoint.xlsx")
+write_xlsx(
+  list(StationPoint = StationPoint
+  ), 
+  file.path(out_dir, "StationPoint.xlsx"))
 
 # =========================
 # DONE
 # =========================
 cat("FINITO!\nOutput salvati in:\n", out_dir, "\n", sep = "")
+
+
+# Produce a pdf with all the characteristics of the station present in the Fogli_cala
+
+library(readxl)
+library(gridExtra)
+library(grid)
+library(gtable)
+
+cartella <- "C:/Users/a.palermino/OneDrive - CNR/Assegno Scarcella/Solemon/Solemon 2025/OnBoard/data/fogli_cala"
+files <- list.files(cartella, pattern = "\\.xlsx$", full.names = TRUE)
+
+# PDF unico salvato nella stessa cartella di input
+pdf_output <- file.path(cartella, "SoleMon_All_Stations.pdf")
+
+break_on_dot <- function(x) {
+  is_na <- is.na(x)
+  x_out <- x
+  x_out[!is_na] <- gsub("\\.\\s*", ".\n", x_out[!is_na])
+  x_out
+}
+
+fmt_datetime <- function(x, fmt_datetime = "%Y-%m-%d %H:%M", fmt_time = "%H:%M",
+                         is_time_only = FALSE) {
+  if (inherits(x, "POSIXt")) {
+    format(x, if (is_time_only) fmt_time else fmt_datetime)
+  } else if (is.numeric(x)) {
+    xx <- as.POSIXct(x, origin = "1970-01-01", tz = "UTC")
+    format(xx, if (is_time_only) fmt_time else fmt_datetime)
+  } else {
+    as.character(x)
+  }
+}
+
+aggiungi_stazione_al_pdf <- function(file_xlsx) {
+  
+  message("Processing: ", basename(file_xlsx))
+  
+  sheets <- excel_sheets(file_xlsx)
+  if (length(sheets) < 2) {
+    message("  -> SKIP: il file ha meno di 2 fogli.")
+    return(invisible(NULL))
+  }
+  
+  station   <- read_excel(file_xlsx, sheet = 1)
+  notescala <- read_excel(file_xlsx, sheet = 2)
+  
+  st1 <- station[1, , drop = FALSE]
+  nc1 <- notescala[1, , drop = FALSE]
+  
+  if ("DateTime" %in% names(st1))      st1$DateTime      <- fmt_datetime(st1$DateTime)
+  if ("HourTimeStart" %in% names(st1)) st1$HourTimeStart <- fmt_datetime(st1$HourTimeStart, is_time_only = TRUE)
+  if ("HourTimeEnd" %in% names(st1))   st1$HourTimeEnd   <- fmt_datetime(st1$HourTimeEnd,   is_time_only = TRUE)
+  
+  station_long <- data.frame(
+    Campo  = names(st1),
+    Valore = vapply(st1, function(x) as.character(x[1]), character(1)),
+    stringsAsFactors = FALSE
+  )
+  
+  notescala_long <- data.frame(
+    Campo  = names(nc1),
+    Valore = vapply(nc1, function(x) as.character(x[1]), character(1)),
+    stringsAsFactors = FALSE
+  )
+  
+  # Notes
+  station_long$Valore[station_long$Campo == "Notes"] <-
+    break_on_dot(station_long$Valore[station_long$Campo == "Notes"])
+  
+  notescala_long$Valore[notescala_long$Campo %in% c("Notes", "Notes shells", "Notes Benthos")] <-
+    break_on_dot(notescala_long$Valore[notescala_long$Campo %in% c("Notes", "Notes shells", "Notes Benthos")])
+  
+  tab_station   <- tableGrob(station_long,   rows = NULL)
+  tab_notescala <- tableGrob(notescala_long, rows = NULL)
+  
+  # Pag 1: STATION
+  grid.newpage()
+  grid.arrange(
+    textGrob(paste0("STATION — ", tools::file_path_sans_ext(basename(file_xlsx))),
+             gp = gpar(fontsize = 16, fontface = "bold")),
+    tab_station,
+    ncol = 1,
+    heights = c(0.08, 0.92), newpage = FALSE
+  )
+  
+  # Pag 2: NOTESCALA
+  grid.newpage()
+  grid.arrange(
+    textGrob(paste0("NOTESCALA — ", tools::file_path_sans_ext(basename(file_xlsx))),
+             gp = gpar(fontsize = 16, fontface = "bold")),
+    tab_notescala,
+    ncol = 1,
+    heights = c(0.08, 0.92), newpage = FALSE
+  )
+  
+  invisible(NULL)
+}
+
+files <- files[order(as.numeric(gsub("\\D", "", basename(files))))]
+
+graphics.off()
+pdf(pdf_output, width = 11.69, height = 8.27)  # A4 landscape
+
+for (f in files) {
+  aggiungi_stazione_al_pdf(f)
+}
+
+dev.off()
+
+cat("PDF unico creato in:\n", pdf_output, "\n")
+
 
 
 
