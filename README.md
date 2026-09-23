@@ -2,7 +2,7 @@
 
 This repo hosts the utilities used to collect and process data on board.
 The explanation of the procedure used to collect data is detailed in the
-[handbook](https://cnrfisheries.github.io/SoleMon_project/).
+[handbook](https://github.com/CNRFisheries/SoleMon_project/blob/main/docs/handbook.html).
 
 ## Instructions for the use of this folder
 
@@ -25,7 +25,7 @@ The explanation of the procedure used to collect data is detailed in the
 ### How to use the data collection folder
 
 The procedure reported here is also explained in more detail in the
-[handbook](https://cnrfisheries.github.io/SoleMon_project/).
+[handbook](https://github.com/CNRFisheries/SoleMon_project/blob/main/docs/handbook.html).
 
 *Carefully check the version history section to make sure to use the
 proper files in 2024*
